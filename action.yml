@@ -6,8 +6,7 @@ inputs:
     required: true
   secret:
     description: "RCConfig Secret"
-    required: false
-    default: ${{ secrets.RCCONFIG_SECRET }}
+    required: true
   rcconfig-service-address:
     description: "RCConfigProvider Host"
     required: false
