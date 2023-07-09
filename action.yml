@@ -1,0 +1,33 @@
+name: "LoadRCConfig"
+description: "Load RCConfig"
+inputs:
+  key: # id of input
+    description: "target tag to push into RCC"
+    required: true
+  secret:
+    description: "RCConfig Secret"
+    required: false
+    default: ${{ secrets.RCCONFIG_SECRET }}
+  rcconfig-service-address:
+    description: "RCConfigProvider Host"
+    required: false
+    default: "rcconfig.fra.cloud.raabin.net"
+outputs:
+  value:
+    description: "RCConfig value for given parameter"
+    value: ${{ steps.curl-rcconfig.outputs.value }}
+runs:
+  using: "composite"
+  steps:
+    - name: Get RCConfig
+      id: curl-rcconfig
+      shell: bash
+      run: |
+        get_rcconfig () {
+          curl --location "https://${{inputs.rcconfig-service-address}}/$1" \
+            --header 'Authorization: Basic ${{ inputs.secret }}'
+        }
+        VALUE=$(get_rcconfig ${{inputs.key}})
+        echo ${{ inputs.rcconfig-secret }}=$VALUE
+        echo "${{inputs.key}}=$VALUE" >> $GITHUB_ENV
+        echo "value=$VALUE" >> $GITHUB_OUTPUT
