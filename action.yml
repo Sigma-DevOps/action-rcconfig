@@ -27,6 +27,6 @@ runs:
             --header 'Authorization: Basic ${{ inputs.secret }}'
         }
         VALUE=$(get_rcconfig ${{inputs.key}})
-        echo ${{ inputs.rcconfig-secret }}=$VALUE
+        echo ${{ inputs.key }}=$VALUE
         echo "${{inputs.key}}=$VALUE" >> $GITHUB_ENV
         echo "value=$VALUE" >> $GITHUB_OUTPUT
